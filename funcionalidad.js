@@ -1,12 +1,13 @@
 
 const MARGEN_TABLERO = 10 ; 
-
 let regulador_velocidad_teclas = 0 ;
 
 function setup (){
-    createCanvas(900,600) ;
-    tablero = new Tablero ()
-    tetrimino = new Tetrimino()
+    createCanvas(900,600) ;    
+    tablero = new Tablero ();
+   
+    tetrimino = new Tetrimino();
+  
     resizeCanvas(
         tablero.ancho + 2*MARGEN_TABLERO,
         tablero.alto + 2*MARGEN_TABLERO)
@@ -41,9 +42,31 @@ function draw (){
 }
 
 
+function crearMapeoBaseTetriminos(){
+
+    tetriminoBase = {
+        "Z" :{
+            color: "red",
+            mapa: [
+                createVector(),
+
+            ]
+        }
+    }
+    
+
+}
+
 class Tetrimino{
 
-    constructor(){
+    constructor(nombre = "Z"){
+        this.nombre = nombre
+        let tetriminoBase = tetriminoBase[ nombre ]
+        this.color = tetriminoBase.color ;
+        this.mapa = []
+        for (const prmino of tetriminoBase.mapa) {            
+            this.mapa.push(pmino.copy());            
+        }
         this.position = createVector( 0 , 0)
     }
 
@@ -62,13 +85,31 @@ class Tetrimino{
     }
 
 
+   get mapaTablero(){
+    
+    let retorno = [] ;
+    for (const pmino of this.mapa){
+        retorno.push(tablero.coordenada( pmino.x , pmino.y) )
+    }
+    return retorno
+
+    }
+
+
+
+
     dibujar(){
         push()
         fill("red")
-        let coord = tablero.coordenada( this.position.x , this.position.y)
-        rect( coord.x , coord.y , tablero.lado_celda)
+        for(const pmino of this.mapaTablero){
+            let coord = tablero.coordenada( pmino.x , pmino.y);  
+            rect( pmino.x , pmino.y , tablero.lado_celda);
+        }
+      
+      
         pop()
     }
+
 }
 
 
